@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
+import br.com.project.equals.activity.EmpresaActivity;
 import br.com.project.equals.activity.HomeActivity;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
@@ -45,7 +46,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
 
         inicializarComponentes();
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        //autenticacao.signOut();  Para deslogar o usuario
+        autenticacao.signOut();  //Para deslogar o usuario
 
         //Verifica se o usuario esta logado
         verificaarUsuarioLogado();
@@ -121,7 +122,8 @@ public class AutenticacaoActivity extends AppCompatActivity {
                                         Toast.makeText(AutenticacaoActivity.this,
                                                 "Login feito com sucesso",
                                                 Toast.LENGTH_SHORT).show();
-                                        abrirTelaPrincipal();
+                                        String tipoUsuario = task.getResult().getUser().getDisplayName();
+                                        abrirTelaPrincipal(tipoUsuario);
                                     } else{
                                         Toast.makeText(AutenticacaoActivity.this,
                                                 "Erro ao fazer login: " + task.getException(),
@@ -150,7 +152,8 @@ public class AutenticacaoActivity extends AppCompatActivity {
     private void verificaarUsuarioLogado(CompoundButton.OnCheckedChangeListener onCheckedChangeListener){
         FirebaseUser usuarioAtual = autenticacao.getCurrentUser();
         if( usuarioAtual != null){
-            abrirTelaPrincipal();
+            String tipoUsuario = usuarioAtual.getDisplayName();
+            abrirTelaPrincipal(tipoUsuario);
         }
     }
 
@@ -162,7 +165,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
     //Metodo que dá um start para HomeActivity apos confirmacao de login ou cadastro
     private void abrirTelaPrincipal(String tipoUsuario){
         if(tipoUsuario.equals("empresa")){
-            //startActivity(new Intent(getApplicationContext(), EmpresaActivity.class));
+            startActivity(new Intent(getApplicationContext(), EmpresaActivity.class));
         } else {//usuario
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
