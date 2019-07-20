@@ -62,6 +62,7 @@ public class EmpresaActivity extends AppCompatActivity {
     private void deslogarUsuario(){
         try {
             autenticacao.signOut();
+            finish(); //sem o finish() não desloga realmente
         } catch (Exception e){
             e.printStackTrace();
         }
