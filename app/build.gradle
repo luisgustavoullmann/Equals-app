@@ -34,6 +34,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:15.0.0' //cloud storage
     implementation 'com.google.firebase:firebase-auth:15.0.0' //authentication
 
+    /*Material Search View*/
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
 }
 
 

@@ -41,8 +41,8 @@ public class AutenticacaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autenticacao);
 
-        //esconde a action bar
-        getSupportActionBar().hide();
+        //esconde a action bar, esta comentado por causa da Toolbar
+        //getSupportActionBar().hide();
 
         inicializarComponentes();
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
