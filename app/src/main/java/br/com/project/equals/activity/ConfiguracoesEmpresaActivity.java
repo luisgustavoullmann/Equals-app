@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import br.com.project.equals.R;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
+import br.com.project.equals.model.Empresa;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
@@ -37,6 +38,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     private static final int SELECAO_GALERIA = 200;
     private StorageReference storageReference;
     private String idUsuarioLogado;
+    private String urlImagemSelecionada = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,52 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+
+    //Metodo que salva os dados da empresa
+    public void validarDadosEmpresa {
+
+        //Valida se os campos foram preenchidos
+        String nome = editEmpresaNome.getText().toString();
+        String taxa = editEmpresaTaxa.getText().toString();
+        String categoria = editEmpresaCategoria.getText().toString();
+        String tempo = editEmpresaTempo.getText().toString();
+
+        if(!nome.isEmpty()){
+            if(!taxa.isEmpty()){
+                if(!categoria.isEmpty()){
+                    if(!tempo.isEmpty()){
+
+                        Empresa empresa = new Empresa();
+                        empresa.setIdUsuario(idUsuarioLogado);
+                        empresa.setNome(nome);
+                        empresa.setPrecoEntrega(Double.parseDouble(taxa));
+                        empresa.setCategoria(categoria);
+                        empresa.setTempo(tempo);
+                        empresa.setUrlImagem(urlImagemSelecionada);
+                        empresa.salvar();
+                        finish(); //nao esqueca o finish ;)
+
+                    } else {
+                        exibirMensagem("Digite um tempo de entrega");
+                    }
+                } else {
+                    exibirMensagem("Digite uma categoria");
+                }
+            } else {
+                exibirMensagem("Digite uma taxa de entrega");
+            }
+
+        } else {
+            exibirMensagem("Digite um nome para a empresa");
+        }
+
+    }
+
+    //Exibe o Toast de acordo com a mensagem
+    private void exibirMensagem(String texto){
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
     //Ver como recupera imagem diretamente da camera do celular
@@ -114,7 +162,11 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            
+
+                            urlImagemSelecionada = taskSnapshot.getDownloadUrl().toString();
+                            Toast.makeText(ConfiguracoesEmpresaActivity.this,
+                                    "Sucesso ao fazer o upload da imagem",
+                                    Toast.LENGTH_LONG).show();
                         }
                     });
 
