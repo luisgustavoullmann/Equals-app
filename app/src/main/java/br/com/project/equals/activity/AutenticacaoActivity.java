@@ -49,7 +49,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
         autenticacao.signOut();  //Para deslogar o usuario
 
         //Verifica se o usuario esta logado
-        verificaarUsuarioLogado();
+        verificarUsuarioLogado();
 
         tipoAcesso.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -149,7 +149,7 @@ public class AutenticacaoActivity extends AppCompatActivity {
     }
 
     //Metodo que verifica se o usuario já esta logado
-    private void verificaarUsuarioLogado(CompoundButton.OnCheckedChangeListener onCheckedChangeListener){
+    private void verificarUsuarioLogado(CompoundButton.OnCheckedChangeListener onCheckedChangeListener){
         FirebaseUser usuarioAtual = autenticacao.getCurrentUser();
         if( usuarioAtual != null){
             String tipoUsuario = usuarioAtual.getDisplayName();

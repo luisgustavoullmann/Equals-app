@@ -109,4 +109,3 @@
         android:padding="16dp"
         android:theme="@style/botaoPadrao"/>
 </LinearLayout>
-<LinearLayout/>

@@ -226,7 +226,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
         editEmpresaNome = findViewById(R.id.editEmpresaNome);
         editEmpresaCategoria = findViewById(R.id.editEmpresaCategoria);
         editEmpresaTaxa = findViewById(R.id.editEmpresaTaxa);
-        editEmpresaTempo = findViewById(R.id.editEmpresaTempo)
+        editEmpresaTempo = findViewById(R.id.editEmpresaTempo);
         imagePerfilEmpresa = findViewById(R.id.imagePerfilEmpresa);
     }
 }
