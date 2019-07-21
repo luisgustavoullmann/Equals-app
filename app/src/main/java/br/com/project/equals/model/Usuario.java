@@ -13,13 +13,13 @@ public class Usuario implements Serializable {
     private String endereco;
     private String telefone;
     private String cpf;
-        private String urlImagem;
+    private String urlImagem;
 
     public void salvar(){
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
-        DatabaseReference empresaRef = firebaseRef.child("empresas")//criando um no de empresas
+        DatabaseReference ususarioRef = firebaseRef.child("usuarios")//criando um no de usuarios
                 .child(getIdUsuario());
-        empresaRef.setValue(this);
+        ususarioRef.setValue(this);
     }
 
     public Usuario() {

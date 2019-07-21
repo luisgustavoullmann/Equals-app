@@ -54,6 +54,12 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracoes_usuario);
 
+        //Config iniciais
+        inicializarComponentes();
+        storageReference = ConfiguracaoFirebase.getFirebaseStorage(); //Acesso a referencia do Storage
+        firebaseRef = ConfiguracaoFirebase.getFirebase();
+        idUsuarioLogado = UsuarioFirebase.getIdUsuario();
+
         //Setup da Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Configurações usuário");
@@ -61,11 +67,6 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
         //Add o botao de voltar
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-        //Config iniciais
-        inicializarComponentes();
-        storageReference = ConfiguracaoFirebase.getFirebaseStorage(); //Acesso a referencia do Storage
-        firebaseRef = ConfiguracaoFirebase.getFirebase();
-        idUsuarioLogado = UsuarioFirebase.getIdUsuario();
 
         //Evento de clique na imagem para add foto do perfil da empresa
         imagePerfilUsuario.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +90,47 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
     public void validarDadosUsuario(View view){
 
         //Valida se os campos foram preenchidos
-        String nome;
+        String nome = editNomeUsuario.getText().toString();
+        String endereco = editEnderecoUsuario.getText().toString();
+        String telefone = editTelefoneUsuario.getText().toString();
+        String cpf = editCpfUsuario.getText().toString();
+
+        if (!nome.isEmpty()) {
+            if (!endereco.isEmpty()) {
+                if (!telefone.isEmpty()) {
+                    if (!cpf.isEmpty()) {
+
+                        Usuario usuario = new Usuario();
+                        usuario.setIdUsuario(idUsuarioLogado);
+                        usuario.setNome(nome);
+                        usuario.setEndereco(endereco);
+                        usuario.setTelefone(telefone);
+                        usuario.setCpf(cpf);
+
+                        usuario.setUrlImagem(urlImagemSelecionada);
+                        usuario.salvar();
+                        finish(); //nao esqueca o finish ;)
+                        exibirMensagem("Usuário salvo com sucesso");
+
+                    } else {
+                        exibirMensagem("Digite CPF válido");
+                    }
+                } else {
+                    exibirMensagem("Digite um tefefone válido");
+                }
+            } else {
+                exibirMensagem("Digite um endereço");
+            }
+
+        } else {
+            exibirMensagem("Digite o seu nome");
+        }
+
+    }
+
+    //Exibe o Toast de acordo com a mensagem
+    private void exibirMensagem(String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
 
