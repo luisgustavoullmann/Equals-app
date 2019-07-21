@@ -1,11 +1,12 @@
 package br.com.project.equals.activity;
 
-import androidx.annotation.AnyThread;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -26,14 +27,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 
 import br.com.project.equals.R;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
 import br.com.project.equals.model.Empresa;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
 
@@ -46,6 +46,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     private String idUsuarioLogado;
     private String urlImagemSelecionada = "";
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +76,8 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, SELECAO_GALERIA);
                 }
-            });
-        }
+            }
+        });
 
                 /*Recuperar dados da emresa*/
                 recuperarDadosEmpresa();

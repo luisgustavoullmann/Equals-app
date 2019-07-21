@@ -3,6 +3,7 @@ package br.com.project.equals.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -43,6 +44,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
     //private ImageView imagemProduto;
     private String idUsuarioLogado;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
