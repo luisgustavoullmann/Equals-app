@@ -138,8 +138,9 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                         empresa.setTempo(tempo);
                         empresa.setUrlImagem(urlImagemSelecionada);
                         empresa.salvar();
-                        finish(); //nao esqueca o finish ;)
+
                         exibirMensagem("Empresa salvo com sucesso");
+                        finish(); //nao esqueca o finish ;)
 
                     } else {
                         exibirMensagem("Digite um tempo de entrega");

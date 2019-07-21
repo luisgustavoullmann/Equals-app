@@ -106,11 +106,11 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
                         usuario.setEndereco(endereco);
                         usuario.setTelefone(telefone);
                         usuario.setCpf(cpf);
-
                         usuario.setUrlImagem(urlImagemSelecionada);
                         usuario.salvar();
+
+                        exibirMensagem("Dados salvos com sucesso");
                         finish(); //nao esqueca o finish ;)
-                        exibirMensagem("Usuário salvo com sucesso");
 
                     } else {
                         exibirMensagem("Digite CPF válido");
