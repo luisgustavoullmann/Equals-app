@@ -72,26 +72,26 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                         Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                 );
-                if(intent.resolveActivity(getPackageManager()) != null){
+                if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, SELECAO_GALERIA);
                 }
             });
         }
 
-        /*Recuperar dados da emresa*/
-        recuperarDadosEmpresa();
+                /*Recuperar dados da emresa*/
+                recuperarDadosEmpresa();
     }
 
 
     //Falta inserir no metodo o load da imagem para travar a tela enquanto executado
-    private void recuperarDadosEmpresa(){
+    private void recuperarDadosEmpresa() {
         DatabaseReference empresaRef = firebaseRef
                 .child("empresas")
                 .child(idUsuarioLogado);
         empresaRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null){
+                if (dataSnapshot.getValue() != null) {
                     Empresa empresa = dataSnapshot.getValue(Empresa.class);
                     editEmpresaNome.setText(empresa.getNome());
                     editEmpresaCategoria.setText(empresa.getCategoria());
@@ -99,7 +99,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                     editEmpresaTempo.setText(empresa.getTempo());
 
                     urlImagemSelecionada = empresa.getUrlImagem();
-                    if(urlImagemSelecionada != ""){
+                    if (urlImagemSelecionada != "") {
                         Picasso.get()
                                 .load(urlImagemSelecionada)
                                 .into(imagePerfilEmpresa);
@@ -116,7 +116,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     }
 
     //Metodo que salva os dados da empresa
-    public void validarDadosEmpresa {
+    public void validarDadosEmpresa(View view) {
 
         //Valida se os campos foram preenchidos
         String nome = editEmpresaNome.getText().toString();
@@ -124,10 +124,10 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
         String categoria = editEmpresaCategoria.getText().toString();
         String tempo = editEmpresaTempo.getText().toString();
 
-        if(!nome.isEmpty()){
-            if(!taxa.isEmpty()){
-                if(!categoria.isEmpty()){
-                    if(!tempo.isEmpty()){
+        if (!nome.isEmpty()) {
+            if (!taxa.isEmpty()) {
+                if (!categoria.isEmpty()) {
+                    if (!tempo.isEmpty()) {
 
                         Empresa empresa = new Empresa();
                         empresa.setIdUsuario(idUsuarioLogado);
@@ -138,6 +138,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                         empresa.setUrlImagem(urlImagemSelecionada);
                         empresa.salvar();
                         finish(); //nao esqueca o finish ;)
+                        exibirMensagem("Empresa salvo com sucesso");
 
                     } else {
                         exibirMensagem("Digite um tempo de entrega");
@@ -156,7 +157,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     }
 
     //Exibe o Toast de acordo com a mensagem
-    private void exibirMensagem(String texto){
+    private void exibirMensagem(String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
@@ -165,11 +166,11 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == RESULT_OK){
+        if (requestCode == RESULT_OK) {
             Bitmap imagem = null;
-            try{
-                switch (requestCode){
-                    case SELECAO_GALERIA :
+            try {
+                switch (requestCode) {
+                    case SELECAO_GALERIA:
                         Uri localImagem = data.getData();
                         imagem = MediaStore.Images
                                 .Media
@@ -180,7 +181,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                         break;
                 }
 
-                if (imagem != null){
+                if (imagem != null) {
                     imagePerfilEmpresa.setImageBitmap(imagem);
 
                     //Upload da imagem em JPEG com uma qualidade de 70px
@@ -214,7 +215,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
 
                 }
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -224,6 +225,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
         editEmpresaNome = findViewById(R.id.editEmpresaNome);
         editEmpresaCategoria = findViewById(R.id.editEmpresaCategoria);
         editEmpresaTaxa = findViewById(R.id.editEmpresaTaxa);
+        editEmpresaTempo = findViewById(R.id.editEmpresaTempo)
         imagePerfilEmpresa = findViewById(R.id.imagePerfilEmpresa);
     }
 }
