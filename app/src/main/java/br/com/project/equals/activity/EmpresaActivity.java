@@ -103,7 +103,7 @@ public class EmpresaActivity extends AppCompatActivity {
     }
 
     private void recuperarProdutos(){
-        final DatabaseReference produtosRef = firebaseRef
+        DatabaseReference produtosRef = firebaseRef
                 .child("produtos")
                 .child(idUsuarioLogado);
         produtosRef.addValueEventListener(new ValueEventListener() {

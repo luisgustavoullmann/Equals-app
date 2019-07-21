@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +29,7 @@ import br.com.project.equals.R;
 import br.com.project.equals.adapter.AdapterEmpresa;
 import br.com.project.equals.adapter.AdapterProduto;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
+import br.com.project.equals.listener.RecyclerItemClickListener;
 import br.com.project.equals.model.Empresa;
 import br.com.project.equals.model.Produto;
 
@@ -77,6 +79,34 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        //Configuração evento de clique nas empresas
+        recyclerEmpresa.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerEmpresa,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Empresa empresaSelecionada = empresas.get(position);
+                                Intent intent = new Intent(HomeActivity.this, Produto.class);
+                                intent.putExtra("empresa", empresaSelecionada);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
+
     }
 
     //Pesquisa empresa por nome, usando search view no activity inicial
