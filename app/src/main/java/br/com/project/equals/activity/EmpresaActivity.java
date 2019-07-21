@@ -35,6 +35,8 @@ import br.com.project.equals.model.Produto;
 
 public class EmpresaActivity extends AppCompatActivity {
 
+    //Add endereço da empresa, para que o usuário possa localizar
+
     private FirebaseAuth autenticacao;
     private RecyclerView recyclerProdutos;
     private AdapterProduto adapterProduto;
