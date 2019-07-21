@@ -146,8 +146,8 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
                     editNomeUsuario.setText(usuario.getNome());
                     editEnderecoUsuario.setText(usuario.getEndereco());
-                    editTelefoneUsuario.setText(usuario.getTelefone().toString());
-                    editCpfUsuario.setText(usuario.getCpf().toString());
+                    editTelefoneUsuario.setText(usuario.getTelefone());
+                    editCpfUsuario.setText(usuario.getCpf());
 
                     urlImagemSelecionada = usuario.getUrlImagem();
                     if (urlImagemSelecionada != "") {
