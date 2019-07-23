@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +32,10 @@ import br.com.project.equals.R;
 import br.com.project.equals.adapter.AdapterProduto;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
+import br.com.project.equals.listener.RecyclerItemClickListener;
 import br.com.project.equals.model.Empresa;
+import br.com.project.equals.model.ItemPedido;
+import br.com.project.equals.model.Pedido;
 import br.com.project.equals.model.Produto;
 import br.com.project.equals.model.Usuario;
 import dmax.dialog.SpotsDialog;
@@ -43,6 +50,7 @@ public class ProdutoActivity extends AppCompatActivity {
 
     private AdapterProduto adapterProduto;
     private List<Produto> produtos = new ArrayList<>();
+    private List<ItemPedido> itemPedidos = new ArrayList<>();
     private DatabaseReference firebaseRef;
     private String idEmpresa;
     private String idUsuarioLogado;
@@ -85,10 +93,77 @@ public class ProdutoActivity extends AppCompatActivity {
         adapterProduto = new AdapterProduto(produtos, this);
         recyclerListaProdutos.setAdapter(adapterProduto);
 
+        //Configurar evento de clique
+        recyclerListaProdutos.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerListaProdutos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                confirmarQuantidade(position);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
+
         //Recupera produtos da empresa para o usuario
         recuperarProdutos();
         recuperarDadosUsuario();
 
+    }
+
+    private void confirmarQuantidade(final int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quantidade");
+        builder.setMessage("Digite a quantidade");
+
+        final EditText editQuantidade = new EditText(this);
+        editQuantidade.setText("1");
+
+        builder.setView(editQuantidade);
+
+        builder.setPositiveButton(
+                "Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String quantidade = editQuantidade.getText().toString();
+
+                        Produto produtoSelecionado = produtos.get(position);
+                        ItemPedido itemPedido = new ItemPedido();
+                        itemPedido.setIdProduto(produtoSelecionado.getIdProduto());
+                        itemPedido.setNomeProduto(produtoSelecionado.getNome());
+                        itemPedido.setDescricaoProduto(produtoSelecionado.getDescricao());
+                        itemPedido.setPreco(produtoSelecionado.getPreco());
+                        itemPedido.setQuantidade(Integer.parseInt(quantidade)); //qtd não pode ser zero
+
+                        //Add pedidos no carrinho
+                        itemPedidos.add(itemPedido); //for para validar se o item já foi adicionado
+
+                        //Salvando o pedido
+
+
+                    }
+                });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     //Spot de load enquanto carrega os dados do usuario

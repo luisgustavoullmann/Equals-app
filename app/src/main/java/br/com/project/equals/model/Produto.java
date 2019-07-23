@@ -12,6 +12,7 @@ public class Produto {
     private String idProduto;
     private String nome;
     private String descricao;
+    private int quantidade;
     private Double preco;
     private ImageView imagemProduto;
 
@@ -86,5 +87,13 @@ public class Produto {
 
     public void setImagemProduto(ImageView imagemProduto) {
         this.imagemProduto = imagemProduto;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 }
