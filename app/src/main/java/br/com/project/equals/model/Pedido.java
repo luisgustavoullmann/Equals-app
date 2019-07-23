@@ -1,12 +1,16 @@
 package br.com.project.equals.model;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.List;
+
+import br.com.project.equals.helper.ConfiguracaoFirebase;
 
 public class Pedido {
 
     private String idUsuario;
     private String idEmpresa;
-    private String idRequisicao;
+    private String idPedido;
     private String nome;
     private String endereco;
     private List<ItemPedido> itens;
@@ -17,6 +21,27 @@ public class Pedido {
 
 
     public Pedido() {
+    }
+
+    public Pedido(String idUsuario, String idEmpresa) {
+        setIdUsuario(idUsuario);
+        setIdEmpresa(idEmpresa);
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos_usuario")
+                .child(idEmpresa)
+                .child(idUsuario);
+        setIdPedido(pedidoRef.push().getKey());
+    }
+
+    public void salvar(){
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos_usuario")
+                .child(getIdEmpresa())
+                .child(getIdUsuario());
+        pedidoRef.setValue(this);
     }
 
     public String getIdUsuario() {
@@ -33,14 +58,6 @@ public class Pedido {
 
     public void setIdEmpresa(String idEmpresa) {
         this.idEmpresa = idEmpresa;
-    }
-
-    public String getIdRequisicao() {
-        return idRequisicao;
-    }
-
-    public void setIdRequisicao(String idRequisicao) {
-        this.idRequisicao = idRequisicao;
     }
 
     public String getNome() {
@@ -97,5 +114,13 @@ public class Pedido {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public String getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(String idPedido) {
+        this.idPedido = idPedido;
     }
 }

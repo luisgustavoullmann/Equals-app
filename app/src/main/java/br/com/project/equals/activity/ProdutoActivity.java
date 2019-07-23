@@ -55,6 +55,7 @@ public class ProdutoActivity extends AppCompatActivity {
     private String idEmpresa;
     private String idUsuarioLogado;
     private Usuario usuario;
+    private Pedido pedidoRecuperado;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -150,8 +151,20 @@ public class ProdutoActivity extends AppCompatActivity {
                         //Add pedidos no carrinho
                         itemPedidos.add(itemPedido); //for para validar se o item já foi adicionado
 
-                        //Salvando o pedido
+                        //Recuperando se o pedido já existe
+                        if(pedidoRecuperado == null){
+                            pedidoRecuperado = new Pedido(idUsuarioLogado, idEmpresa);
+                        }
 
+                        //Config do pedido
+                        pedidoRecuperado.setNome(usuario.getNome());
+                        pedidoRecuperado.setEndereco(usuario.getEndereco());
+
+                        //Config itens do pedido
+                        pedidoRecuperado.setItens(itemPedidos); //retorna o List<Pedido>
+
+                        //Salvando o pedido
+                        pedidoRecuperado.salvar();
 
                     }
                 });
