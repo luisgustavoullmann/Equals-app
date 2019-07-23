@@ -1,12 +1,17 @@
 package br.com.project.equals.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +27,11 @@ import java.util.List;
 import br.com.project.equals.R;
 import br.com.project.equals.adapter.AdapterProduto;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
+import br.com.project.equals.helper.UsuarioFirebase;
 import br.com.project.equals.model.Empresa;
 import br.com.project.equals.model.Produto;
+import br.com.project.equals.model.Usuario;
+import dmax.dialog.SpotsDialog;
 
 public class ProdutoActivity extends AppCompatActivity {
 
@@ -31,11 +39,14 @@ public class ProdutoActivity extends AppCompatActivity {
     private ImageView imagemEmpresaProduto;
     private TextView textNomeEmpresaProduto;
     private Empresa empresaSelecionada;
+    private AlertDialog dialog;
 
     private AdapterProduto adapterProduto;
     private List<Produto> produtos = new ArrayList<>();
     private DatabaseReference firebaseRef;
     private String idEmpresa;
+    private String idUsuarioLogado;
+    private Usuario usuario;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -46,6 +57,7 @@ public class ProdutoActivity extends AppCompatActivity {
         //Configurações iniciais
         inicializarComponentes();
         firebaseRef = ConfiguracaoFirebase.getFirebase();
+        idUsuarioLogado = UsuarioFirebase.getIdUsuario();
 
         //Recupera a empresa selecionada
         Bundle bundle = getIntent().getExtras();
@@ -75,7 +87,45 @@ public class ProdutoActivity extends AppCompatActivity {
 
         //Recupera produtos da empresa para o usuario
         recuperarProdutos();
+        recuperarDadosUsuario();
 
+    }
+
+    //Spot de load enquanto carrega os dados do usuario
+    private void recuperarDadosUsuario(){
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Carregando dados")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+
+        DatabaseReference usuarioRef = firebaseRef
+                .child("usuarios")
+                .child(idUsuarioLogado);
+
+        usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null ){
+                    usuario = dataSnapshot.getValue(Usuario.class);
+                }
+
+                recuperarPedido();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    //Recupera o pedido de acordo com o usuario logado e o recuperarDadosUsuario
+    private void recuperarPedido() {
+        dialog.dismiss();
     }
 
     private void recuperarProdutos(){
@@ -98,6 +148,24 @@ public class ProdutoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_produto, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuPedido :
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void inicializarComponentes(){
