@@ -19,6 +19,14 @@ public class Pedido {
     private int metodoPagamento;
     private String observacao;
 
+    //posição do usuário no map e talvez foto (imageView do usuario),
+    // ver comentários em:
+    // adapter_pedido,
+    // AdapterPedido
+    // activity_pedidos,
+    // ProdutoActivity (confirmarPedido())
+    // e nesse model (Pedido), metodos confirmar e remover
+
 
     public Pedido() {
     }
