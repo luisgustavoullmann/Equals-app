@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.project.equals.R;
@@ -29,7 +30,7 @@ public class PedidosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerPedidos;
     private AdapterPedido adapterPedido;
-    private List<Pedido> pedidos;
+    private List<Pedido> pedidos = new ArrayList<>();
     private AlertDialog dialog;
     private DatabaseReference firebaseRef;
     private String idEmpresa;
