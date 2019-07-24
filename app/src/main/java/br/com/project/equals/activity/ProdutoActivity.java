@@ -60,6 +60,7 @@ public class ProdutoActivity extends AppCompatActivity {
     private Pedido pedidoRecuperado;
     private int qtdItensCarrinho;
     private Double totalCarrinho;
+    private int metodoPagamento;
 
 
     @SuppressLint("RestrictedApi")
@@ -301,10 +302,72 @@ public class ProdutoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menuPedido :
-
+                //Confirmando Pedido
+                confirmarPedido(); //Usuário escolhe o meio de pagamento e coloca uma observação, possível de colocar um chat
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //Usuário escolhe o meio de pagamento e coloca uma observação, possível de colocar um chat
+    //Caso tenha escolhido meio de entrega, a empresa confirma a saída
+    //Pode implementar um meio de pagamento, pedindo dados do cartão
+    private void confirmarPedido() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecione o meio de pagamento que você prefere: ");
+
+        //Opções de pagamento
+        //Poderemos colocar que se escolher cartão, um input ou confirmação do mesmo
+        CharSequence[] itens = new  CharSequence[]{
+            "Cartão", "Dinheiro"
+        };
+        //Por padrão, cartão é a opção checked
+        builder.setSingleChoiceItems(itens, 0, new DialogInterface.OnClickListener() {
+            // i = indica qual forma de pagamento o usuário selecionou
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                metodoPagamento = i;
+            }
+        });
+
+        final EditText editObservacao = new EditText(this);
+        editObservacao.setHint("Digite uma observação");
+        builder.setView(editObservacao);
+
+        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String observacao = editObservacao.getText().toString();
+                //Implementar - Aqui podemos chamar o dialog caso o usuario tenha
+                // escolhido cartão, pedir input ou confirmar os dados
+                pedidoRecuperado.setMetodoPagamento(metodoPagamento);
+                pedidoRecuperado.setObservacao(observacao);
+                //Alteramos o status do pedido de pendente para confirmado
+                pedidoRecuperado.setStatus("confirmado");
+
+                //A cada pedido confirmado,
+                //poderemos traçar no mapa qual o melhor caminho para o usuario,
+                //usando  algoritmos inteligentes de busca,
+                // para termos o melhor caminho baseado nos endereços
+                // que o usuario terá que percorrer
+                pedidoRecuperado.confirmar();
+
+                //removendo o pedido, temporario,
+                //pois podemos criar um novo nó, como está no comentário do metdo
+                pedidoRecuperado.remover();
+                pedidoRecuperado = null;
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void inicializarComponentes(){

@@ -35,6 +35,7 @@ public class Pedido {
         setIdPedido(pedidoRef.push().getKey());
     }
 
+
     public void salvar(){
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
         DatabaseReference pedidoRef = firebaseRef
@@ -42,6 +43,34 @@ public class Pedido {
                 .child(getIdEmpresa())
                 .child(getIdUsuario());
         pedidoRef.setValue(this);
+    }
+
+    //Caso queira fazer um estrutura de pedidos que o usuario
+    //Podemos manter o no "pedidos",
+    // utilizando idEmpresa e idUsuario, podemos recuparar essas informações
+    //cria um no de pedidos pendentes para a empresa
+    //mas ainda continua pendente para os usuarios
+    public void confirmar(){
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos")
+                .child(getIdEmpresa())
+                .child(getIdPedido());
+        pedidoRef.setValue(this);
+    }
+
+    //Poderiamos criar um no chamado "meus_pedidos",
+    //aonde retornamos todos os pedidos do usuario, para o usuario
+    //baseado no idUsuario.
+    //No temporario, assim que o usuario confirmar
+    // é criado o no de pedidos para empresa
+    public void remover(){
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos_usuario")
+                .child(getIdEmpresa())
+                .child(getIdUsuario());
+        pedidoRef.removeValue();
     }
 
     public String getIdUsuario() {
