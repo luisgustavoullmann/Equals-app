@@ -63,9 +63,6 @@ public class EmpresaActivity extends AppCompatActivity {
 
         //Configuração recyclerView
         recyclerProdutos.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void inicializarComponentes(){
         recyclerProdutos = findViewById(R.id.recyclerProdutos);
         recyclerProdutos.setHasFixedSize(true);
         adapterProduto = new AdapterProduto(produtos, this);
@@ -101,6 +98,9 @@ public class EmpresaActivity extends AppCompatActivity {
                         }
                 )
         );
+    }
+
+    private void inicializarComponentes(){
 
     }
 
