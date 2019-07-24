@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +24,7 @@ import br.com.project.equals.adapter.AdapterPedido;
 import br.com.project.equals.adapter.AdapterProduto;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
+import br.com.project.equals.listener.RecyclerItemClickListener;
 import br.com.project.equals.model.Pedido;
 import br.com.project.equals.model.Usuario;
 import dmax.dialog.SpotsDialog;
@@ -60,6 +63,38 @@ public class PedidosActivity extends AppCompatActivity {
         recyclerPedidos.setAdapter(adapterPedido);
 
         recuperarPedidos();
+
+        //Evento de clique no recyclerView - Recuperar Pedidos
+        recyclerPedidos.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerPedidos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                //Podemos usar um AlertDialog,
+                                // para fazer a confirmação
+                                // de que o pedido foi finalizado
+                                //Exibindo para o usuário uma confirmação
+                                // de que o pedido realmente foi finalizado
+                                Pedido pedido = pedidos.get(position);
+                                pedido.setStatus("finalizado");
+                                pedido.atualizarStatus();
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
 
     }
 

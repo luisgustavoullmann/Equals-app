@@ -2,6 +2,7 @@ package br.com.project.equals.model;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.project.equals.helper.ConfiguracaoFirebase;
@@ -79,6 +80,21 @@ public class Pedido {
                 .child(getIdEmpresa())
                 .child(getIdUsuario());
         pedidoRef.removeValue();
+    }
+
+    //Atualiza o status do pedido
+    public void atualizarStatus(){
+
+        HashMap<String, Object> status = new HashMap<>();
+        //atualizado o no de status do pedido para finalizado
+        status.put("status", getStatus());
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos")
+                .child(getIdEmpresa())
+                .child(getIdPedido());
+        pedidoRef.updateChildren(status);
     }
 
     public String getIdUsuario() {
