@@ -79,16 +79,16 @@ public class EmpresaActivity extends AppCompatActivity {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
                                 Produto produtoSelecionado = produtos.get(position);
                                 produtoSelecionado.remover();
                                 Toast.makeText(EmpresaActivity.this,
                                         "Produto excluído com sucesso",
                                         Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-
                             }
 
                             @Override
@@ -98,10 +98,6 @@ public class EmpresaActivity extends AppCompatActivity {
                         }
                 )
         );
-    }
-
-    private void inicializarComponentes(){
-
     }
 
     private void recuperarProdutos(){
@@ -124,6 +120,10 @@ public class EmpresaActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void inicializarComponentes(){
+        recyclerProdutos = findViewById(R.id.recyclerProdutos);
     }
 
 
