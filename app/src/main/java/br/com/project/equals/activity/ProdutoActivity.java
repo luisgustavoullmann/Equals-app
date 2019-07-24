@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class ProdutoActivity extends AppCompatActivity {
     private TextView textNomeEmpresaProduto;
     private Empresa empresaSelecionada;
     private AlertDialog dialog;
+    private TextView textCarrinhoQtd, textCarrinhoTotal;
 
     private AdapterProduto adapterProduto;
     private List<Produto> produtos = new ArrayList<>();
@@ -56,6 +58,9 @@ public class ProdutoActivity extends AppCompatActivity {
     private String idUsuarioLogado;
     private Usuario usuario;
     private Pedido pedidoRecuperado;
+    private int qtdItensCarrinho;
+    private Double totalCarrinho;
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -149,7 +154,11 @@ public class ProdutoActivity extends AppCompatActivity {
                         itemPedido.setQuantidade(Integer.parseInt(quantidade)); //qtd não pode ser zero
 
                         //Add pedidos no carrinho
-                        itemPedidos.add(itemPedido); //for para validar se o item já foi adicionado
+                        //itemPedidos.add(itemPedido); //for para validar se o item já foi adicionado
+                        for(ItemPedido itensPedido : itemPedidos){
+                            itemPedidos.add(itemPedido); //for para validar se o item já foi adicionado
+                            quantidade += quantidade; //corrigir se estiver errado
+                        }
 
                         //Recuperando se o pedido já existe
                         if(pedidoRecuperado == null){
@@ -213,7 +222,49 @@ public class ProdutoActivity extends AppCompatActivity {
 
     //Recupera o pedido de acordo com o usuario logado e o recuperarDadosUsuario
     private void recuperarPedido() {
-        dialog.dismiss();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos_usuario")
+                .child(idEmpresa)
+                .child(idUsuarioLogado);
+
+        //A cada item  que foi add, iremos recupera-lo
+        pedidoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //Zerando valores do carrinho de compras
+                qtdItensCarrinho = 0;
+                totalCarrinho = 0.0;
+                itemPedidos = new ArrayList<>();
+
+                if (dataSnapshot.getValue() != null) {
+                    pedidoRecuperado = dataSnapshot.getValue(Pedido.class);
+
+                    //Montagem de itens, retorna a listagem de itens pedidos
+                    itemPedidos = pedidoRecuperado.getItens();
+                    for(ItemPedido itemPedido : itemPedidos){
+                        int quantidade = itemPedido.getQuantidade();
+                        Double preco = itemPedido.getPreco();
+
+                        totalCarrinho += (quantidade * preco);
+                        qtdItensCarrinho += quantidade;
+                    }
+                }
+
+                DecimalFormat df = new DecimalFormat("0.00"); //apagar com mascara de moeda
+
+                //Exibindo os dados-quantidades
+                textCarrinhoQtd.setText("qtd: " + String.valueOf(qtdItensCarrinho));
+                textCarrinhoTotal.setText("R$ " + df.format(totalCarrinho));// aplica mask de moeda
+
+
+                dialog.dismiss();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void recuperarProdutos(){
@@ -260,5 +311,8 @@ public class ProdutoActivity extends AppCompatActivity {
         recyclerListaProdutos = findViewById(R.id.recyclerListaProdutos);
         imagemEmpresaProduto = findViewById(R.id.imageEmpresaProduto);
         textNomeEmpresaProduto = findViewById(R.id.textNomeEmpresaProduto);
+
+        textCarrinhoQtd = findViewById(R.id.textCarrinhoQtd);
+        textCarrinhoTotal = findViewById(R.id.textCarrinhoTotal);
     }
 }
