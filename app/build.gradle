@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "br.com.project.equals"
-        minSdkVersion 15
+        minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:15.0.0' //realtime database
     implementation 'com.google.firebase:firebase-storage:15.0.0' //cloud storage
     implementation 'com.google.firebase:firebase-auth:15.0.0' //authentication
+    implementation 'com.google.firebase:firebase-ml-vision:21.0.0'//OCR
 
     /*Material Search View*/
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
