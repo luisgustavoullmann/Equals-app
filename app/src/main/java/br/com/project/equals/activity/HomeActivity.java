@@ -1,13 +1,20 @@
 package br.com.project.equals.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +34,6 @@ import java.util.List;
 
 import br.com.project.equals.R;
 import br.com.project.equals.adapter.AdapterEmpresa;
-import br.com.project.equals.adapter.AdapterProduto;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.listener.RecyclerItemClickListener;
 import br.com.project.equals.model.Empresa;
@@ -35,12 +41,16 @@ import br.com.project.equals.model.Produto;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "HomeActivity";
     private FirebaseAuth autenticacao;
     private MaterialSearchView searchView;
     private RecyclerView recyclerEmpresa;
     private List<Empresa> empresas = new ArrayList<>();
     private DatabaseReference firebaseRef;
     private AdapterEmpresa adapterEmpresa;
+
+    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
+    private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +117,118 @@ public class HomeActivity extends AppCompatActivity {
                 )
         );
 
+      //Beacon
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                if (this.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    if (this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Este aplicativo precisa de localização em background");
+                        builder.setMessage("Por favor, ative o acesso a localização para que o este app possa detectar os beacons em backgroud");
+                        builder.setPositiveButton(android.R.string.ok, null);
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                            @TargetApi(23)
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                                        PERMISSION_REQUEST_BACKGROUND_LOCATION);
+                            }
+
+                        });
+                        builder.show();
+                    }
+                    else {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Funcionalidade Limitada");
+                        builder.setMessage("Caso não haja acesso a localização em background, os beacons não irão funcionar.  Por favor vá para Configurações -> Aplicativos -> Permissões de localização para este aplicativo..");
+                        builder.setPositiveButton(android.R.string.ok, null);
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                            }
+
+                        });
+                        builder.show();
+                    }
+
+                }
+            } else {
+                if (this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                            PERMISSION_REQUEST_FINE_LOCATION);
+                }
+                else {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Funcionalidade Limitada");
+                    builder.setMessage("Caso não haja acesso a localização, os beacons não irão funcionar.  Por favor vá para Configurações -> Aplicativos -> Permissões de localização para este aplicativo.");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                        }
+
+                    });
+                    builder.show();
+                }
+
+            }
+        }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode,
+        String permissions[], int[] grantResults) {
+            switch (requestCode) {
+                case PERMISSION_REQUEST_FINE_LOCATION: {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Log.d(TAG, "Aceita a permissão de localização");
+                    } else {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Funcionalidade Limitada");
+                        builder.setMessage("Caso não haja acesso a localização, os beacons não irão funcionar.");
+                        builder.setPositiveButton(android.R.string.ok, null);
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                            }
+
+                        });
+                        builder.show();
+                    }
+                    return;
+                }
+                case PERMISSION_REQUEST_BACKGROUND_LOCATION: {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Log.d(TAG, "Aceita a localização em background");
+                    } else {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Funcionalidade limitada");
+                        builder.setMessage("Caso não haja acesso a localização em background, os beacons não irão funcionar.");
+                        builder.setPositiveButton(android.R.string.ok, null);
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                            }
+
+                        });
+                        builder.show();
+                    }
+                    return;
+                }
+            }
+        }
+
     }
+
+
+
 
     //Pesquisa empresa por nome, usando search view no activity inicial
     private void pesquisarEmpresas(String pesquisa){
