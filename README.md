@@ -1,3 +1,2 @@
 # Equals-app
-An Android App made for the Equals project
-a
+An Android App made for the Equals academic project
