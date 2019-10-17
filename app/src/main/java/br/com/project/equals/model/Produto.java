@@ -85,7 +85,7 @@ public class Produto {
         return imagemProduto;
     }
 
-    public void setImagemProduto(ImageView imagemProduto) {
+    public void setImagemProduto(String imagemProduto) {
         this.imagemProduto = imagemProduto;
     }
 
