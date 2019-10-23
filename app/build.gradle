@@ -48,7 +48,7 @@ dependencies {
     /*Dependência spots dialog, barra de progresso*/
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
-    /*Beacon*/
+    /*Beacon */
     //implementation 'org.altbeacon:android-beaconlibrary:2+'
 
 }
