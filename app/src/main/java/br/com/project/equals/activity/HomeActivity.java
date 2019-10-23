@@ -117,7 +117,103 @@ public class HomeActivity extends AppCompatActivity {
                 )
         );
 
-      //Beacon
+    }
+
+
+    //Pesquisa empresa por nome, usando search view no activity inicial
+    private void pesquisarEmpresas(String pesquisa){
+        DatabaseReference empresasRef = firebaseRef
+                .child("empresas");
+        Query query = empresasRef.orderByChild("nome")
+                .startAt(pesquisa)
+                .endAt(pesquisa + "\uf8ff");
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                empresas.clear();
+
+                for (DataSnapshot ds:dataSnapshot.getChildren()){
+                    empresas.add(ds.getValue(Empresa.class));
+                }
+                adapterEmpresa.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void recuperarEmpresas(){
+        DatabaseReference empresaRef = firebaseRef.child("empresas");
+        empresaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                empresas.clear();
+
+                for (DataSnapshot ds:dataSnapshot.getChildren()){
+                    empresas.add(ds.getValue(Empresa.class));
+                }
+                adapterEmpresa.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    //Configuração do menu da toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_usuario, menu);
+
+        //Configuracoes do btn de pesquisa
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        searchView.setMenuItem(item);
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuSair :
+                deslogarUsuario();
+                break;
+            case R.id.menuConfiguracoes :
+                abrirConfiguracoes();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void inicializarComponentes(){
+        searchView = findViewById(R.id.materialSearchView);
+        recyclerEmpresa = findViewById(R.id.recyclerEmpresa);
+        myBeacon();
+    }
+
+    private void deslogarUsuario(){
+        try {
+            autenticacao.signOut();
+            finish(); //sem o finish() não desloga realmente
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void abrirConfiguracoes(){
+        startActivity(new Intent(HomeActivity.this, ConfiguracoesUsuarioActivity.class));
+    }
+
+    private void myBeacon() {
+        //Beacon
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -224,100 +320,5 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }
-
-    }
-
-
-
-
-    //Pesquisa empresa por nome, usando search view no activity inicial
-    private void pesquisarEmpresas(String pesquisa){
-        DatabaseReference empresasRef = firebaseRef
-                .child("empresas");
-        Query query = empresasRef.orderByChild("nome")
-                .startAt(pesquisa)
-                .endAt(pesquisa + "\uf8ff");
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                empresas.clear();
-
-                for (DataSnapshot ds:dataSnapshot.getChildren()){
-                    empresas.add(ds.getValue(Empresa.class));
-                }
-                adapterEmpresa.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void recuperarEmpresas(){
-        DatabaseReference empresaRef = firebaseRef.child("empresas");
-        empresaRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                empresas.clear();
-
-                for (DataSnapshot ds:dataSnapshot.getChildren()){
-                    empresas.add(ds.getValue(Empresa.class));
-                }
-                adapterEmpresa.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    //Configuração do menu da toolbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_usuario, menu);
-
-        //Configuracoes do btn de pesquisa
-        MenuItem item = menu.findItem(R.id.menuPesquisa);
-        searchView.setMenuItem(item);
-
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menuSair :
-                deslogarUsuario();
-                break;
-            case R.id.menuConfiguracoes :
-                abrirConfiguracoes();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void inicializarComponentes(){
-        searchView = findViewById(R.id.materialSearchView);
-        recyclerEmpresa = findViewById(R.id.recyclerEmpresa);
-    }
-
-    private void deslogarUsuario(){
-        try {
-            autenticacao.signOut();
-            finish(); //sem o finish() não desloga realmente
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void abrirConfiguracoes(){
-        startActivity(new Intent(HomeActivity.this, ConfiguracoesUsuarioActivity.class));
     }
 }
