@@ -32,6 +32,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +50,7 @@ import br.com.project.equals.listener.RecyclerItemClickListener;
 import br.com.project.equals.model.Empresa;
 import br.com.project.equals.model.Produto;
 
-public class HomeActivity extends AppCompatActivity implementes BeaconConsumer {
+public class HomeActivity extends AppCompatActivity implements BeaconConsumer {
 
     private static final String TAG = "HomeActivity";
     private BeaconManager beaconManager;
@@ -56,6 +63,8 @@ public class HomeActivity extends AppCompatActivity implementes BeaconConsumer {
 
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
+    private Intent intent;
+    private ServiceConnection serviceConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,6 +358,12 @@ public class HomeActivity extends AppCompatActivity implementes BeaconConsumer {
         }
 
         @Override
+        public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+            //Ativa o service connection do BeaconConsumer
+            return bindService(intent, serviceConnection, i);
+        }
+
+        @Override
         public void onBeaconServiceConnection(){
             //Constroi nova região para monitorar
             final Region region = new Region("myBeacons", null, null, null);
@@ -435,7 +450,7 @@ public class HomeActivity extends AppCompatActivity implementes BeaconConsumer {
 
             try{
                 //Iniciando monitoramento dos beacons
-                beaconManager.startMonitorBeaconsInRegion(region);
+                beaconManager.startMonitoringBeaconsInRegion(region);
             } catch (RemoteException e){
                 //
             }

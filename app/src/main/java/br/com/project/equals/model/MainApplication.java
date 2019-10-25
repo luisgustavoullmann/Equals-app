@@ -13,7 +13,7 @@ import org.altbeacon.beacon.service.BeaconService;
 import org.altbeacon.beacon.startup.BootstrapNotifier;
 import org.altbeacon.beacon.startup.RegionBootstrap;
 
-public class MainApplication extends Application implements BootstrapNotifier {
+public abstract class MainApplication extends Application implements BootstrapNotifier {
 
     public static BeaconManager beaconManager;
     private RegionBootstrap regionBootstrap;
