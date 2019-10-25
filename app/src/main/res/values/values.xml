@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">222504851960-28fld38p6mh5qskpcrjsomv61ql9rtj4.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://equals-app.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">222504851960</string>
+    <string name="google_api_key" translatable="false">AIzaSyCLXDgr05C5pybOha1Uf4cIcxIfpPYkMk8</string>
+    <string name="google_app_id" translatable="false">1:222504851960:android:d0fec2b5502a3fd2</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCLXDgr05C5pybOha1Uf4cIcxIfpPYkMk8</string>
+    <string name="google_storage_bucket" translatable="false">equals-app.appspot.com</string>
+    <string name="project_id" translatable="false">equals-app</string>
+</resources>

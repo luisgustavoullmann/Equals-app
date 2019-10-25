@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
     /*Beacon */
-    //implementation 'org.altbeacon:android-beaconlibrary:2+'
+    implementation 'org.altbeacon:android-beacon-library:2.16.3'
 
 }
 
