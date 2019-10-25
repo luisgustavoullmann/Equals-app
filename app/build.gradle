@@ -50,6 +50,7 @@ dependencies {
 
     /*Beacon */
     implementation 'org.altbeacon:android-beacon-library:2.16.3'
+    implementation  'com.google.android.gms:play-services-nearby:17.0.0'
 
 }
 
