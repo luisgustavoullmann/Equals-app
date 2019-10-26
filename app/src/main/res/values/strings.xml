@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Equals</string>
+    <string name="action_gallery" />
+    <string name="action_camera" />
+    <string name="confirm_permission">Esse app precisa ter acesso ao seu aparelho.</string>
+    <string name="confirm_camera">Esse app precisa ter acesso ao seu aparelho.</string>
+    <string name="btn_device">Device</string>
+    <string name="btn_cloud">Cloud</string>
 </resources>

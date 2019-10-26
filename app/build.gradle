@@ -29,11 +29,14 @@ dependencies {
 
     /*Firebase libs*/
     //noinspection GradleDependency
-    implementation 'com.google.firebase:firebase-core:15.0.0' //firebase
+    implementation 'com.google.firebase:firebase-core:17.2.0' //firebase
     implementation 'com.google.firebase:firebase-database:15.0.0' //realtime database
     implementation 'com.google.firebase:firebase-storage:15.0.0' //cloud storage
     implementation 'com.google.firebase:firebase-auth:15.0.0' //authentication
-    implementation 'com.google.firebase:firebase-ml-vision:21.0.0'//OCR
+    implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.1'
+    implementation 'com.google.firebase:firebase-ml-vision:23.0.0'//OCR
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:18.0.0'
+    implementation 'com.google.firebase:firebase-ml-model-interpreter:21.0.0'
 
     /*Material Search View*/
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
