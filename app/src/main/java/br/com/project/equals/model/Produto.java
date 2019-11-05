@@ -1,7 +1,5 @@
 package br.com.project.equals.model;
 
-import android.widget.ImageView;
-
 import com.google.firebase.database.DatabaseReference;
 
 import br.com.project.equals.helper.ConfiguracaoFirebase;
@@ -14,7 +12,7 @@ public class Produto {
     private String descricao;
     private int quantidade;
     private Double preco;
-    private ImageView imagemProduto;
+    private String imagemProduto;
 
     public Produto() {
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
@@ -81,7 +79,7 @@ public class Produto {
         this.preco = preco;
     }
 
-    public ImageView getImagemProduto() {
+    public String getImagemProduto() {
         return imagemProduto;
     }
 
