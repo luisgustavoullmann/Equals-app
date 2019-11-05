@@ -28,5 +28,5 @@ public interface ProdutoService {
     Call<List<Produto>> recuperarProdutos();
 
     @GET("/api/produto/{id}") //retorna informações de um determinado produto
-    Call<Produto> recuperarProduto();
+    Call<Produto> recuperarProduto(@Path("id") String idProduto);
 }
