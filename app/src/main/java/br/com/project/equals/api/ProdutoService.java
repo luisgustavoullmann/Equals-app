@@ -4,6 +4,8 @@ import java.util.List;
 
 import br.com.project.equals.model.Produto;
 import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface ProdutoService {
 
@@ -16,9 +18,15 @@ public interface ProdutoService {
      * integradas a nossa aplicação.
      * */
 
+    @GET("/api/add-produto") //Adiciona um produto na loja.
     Call<Produto> adicionarProduto();
 
+    @GET("/api//edit-produto") //Possibilita a ediçao de um produto
+    Call<Produto> editarProduto();
+
+    @GET("/api//produtos") //Lista todos os produtos do comerciante em questão
     Call<List<Produto>> recuperarProdutos();
 
+    @GET("/api/produto/{id}") //retorna informações de um determinado produto
     Call<Produto> recuperarProduto();
 }

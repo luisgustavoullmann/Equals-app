@@ -28,10 +28,17 @@ import java.util.List;
 
 import br.com.project.equals.R;
 import br.com.project.equals.adapter.AdapterProduto;
+import br.com.project.equals.api.EmpresaService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
 import br.com.project.equals.listener.RecyclerItemClickListener;
+import br.com.project.equals.model.Empresa;
 import br.com.project.equals.model.Produto;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EmpresaActivity extends AppCompatActivity {
 
@@ -43,6 +50,7 @@ public class EmpresaActivity extends AppCompatActivity {
     private List<Produto> produtos = new ArrayList<>();
     private DatabaseReference firebaseRef;
     private String idUsuarioLogado;
+    private Retrofit retrofit;
 
 
     @Override
@@ -55,6 +63,13 @@ public class EmpresaActivity extends AppCompatActivity {
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         firebaseRef = ConfiguracaoFirebase.getFirebase();
         idUsuarioLogado = UsuarioFirebase.getIdUsuario();
+
+        //Retrofit Config
+        retrofit = new Retrofit.Builder()
+        //passar a URL aonda está ""
+        .baseUrl("")
+        .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         //Setup da Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -70,6 +85,9 @@ public class EmpresaActivity extends AppCompatActivity {
 
         //Recupra os produtos para cada empresa
         recuperarProdutos();
+
+        //Retrofit
+        recuperarEmpresa();
 
         //Adiciona evento de clique no recyclerView, substituir por um swipe de edição
         recyclerProdutos.addOnItemTouchListener(
@@ -174,5 +192,23 @@ public class EmpresaActivity extends AppCompatActivity {
 
     private void abrirNovoProduto(){
         startActivity(new Intent(EmpresaActivity.this, NovoProdutoEmpresaActivity.class));
+    }
+
+    private void recuperarEmpresa(){
+        EmpresaService empresaService = retrofit.create(EmpresaService.class);
+        Call<Empresa> call = empresaService.recuperarLoja();
+
+        //call faz a tarefa assincrona dentro de uma thread para trazer as infos
+        call.enqueue(new Callback<Empresa>() {
+            @Override
+            public void onResponse(Call<Empresa> call, Response<Empresa> response) {
+                //Nossa resposta
+            }
+
+            @Override
+            public void onFailure(Call<Empresa> call, Throwable t) {
+                //Ao falhar
+            }
+        });
     }
 }

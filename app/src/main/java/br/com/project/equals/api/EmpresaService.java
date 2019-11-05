@@ -2,6 +2,7 @@ package br.com.project.equals.api;
 
 import br.com.project.equals.model.Empresa;
 import retrofit2.Call;
+import retrofit2.http.GET;
 
 public interface EmpresaService {
 
@@ -14,5 +15,6 @@ public interface EmpresaService {
      * integradas a nossa aplicação.
      * */
 
+    @GET("/api/add-loja")
     Call<Empresa> recuperarLoja();
 }
