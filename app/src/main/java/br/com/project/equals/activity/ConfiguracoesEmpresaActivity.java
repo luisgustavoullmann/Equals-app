@@ -37,7 +37,7 @@ import br.com.project.equals.model.Empresa;
 
 public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
 
-    private EditText editEmpresaNome, editEmpresaCategoria, editEmpresaTempo, editEmpresaTaxa;
+    private EditText editEmpresaNome, editEmpresaCategoria, editEmpresaEndereco, editEmpresaTempo, editEmpresaTaxa;
     private ImageView imagePerfilEmpresa;
 
     private static final int SELECAO_GALERIA = 200;
@@ -95,6 +95,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                 if (dataSnapshot.getValue() != null) {
                     Empresa empresa = dataSnapshot.getValue(Empresa.class);
                     editEmpresaNome.setText(empresa.getNome());
+                    editEmpresaEndereco.setText(empresa.getEndereco());
                     editEmpresaCategoria.setText(empresa.getCategoria());
                     editEmpresaTaxa.setText(empresa.getPrecoEntrega().toString());
                     editEmpresaTempo.setText(empresa.getTempo());
@@ -121,37 +122,42 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
 
         //Valida se os campos foram preenchidos
         String nome = editEmpresaNome.getText().toString();
+        String endereco = editEmpresaEndereco.getText().toString();
         String taxa = editEmpresaTaxa.getText().toString();
         String categoria = editEmpresaCategoria.getText().toString();
         String tempo = editEmpresaTempo.getText().toString();
 
         if (!nome.isEmpty()) {
-            if (!taxa.isEmpty()) {
-                if (!categoria.isEmpty()) {
-                    if (!tempo.isEmpty()) {
+            if(!endereco.isEmpty()) {
+                if (!taxa.isEmpty()) {
+                    if (!categoria.isEmpty()) {
+                        if (!tempo.isEmpty()) {
 
-                        Empresa empresa = new Empresa();
-                        empresa.setIdUsuario(idUsuarioLogado);
-                        empresa.setNome(nome);
-                        empresa.setPrecoEntrega(Double.parseDouble(taxa));
-                        empresa.setCategoria(categoria);
-                        empresa.setTempo(tempo);
-                        empresa.setUrlImagem(urlImagemSelecionada);
-                        empresa.salvar();
+                            Empresa empresa = new Empresa();
+                            empresa.setIdUsuario(idUsuarioLogado);
+                            empresa.setNome(nome);
+                            empresa.setEndereco(endereco);
+                            empresa.setPrecoEntrega(Double.parseDouble(taxa));
+                            empresa.setCategoria(categoria);
+                            empresa.setTempo(tempo);
+                            empresa.setUrlImagem(urlImagemSelecionada);
+                            empresa.salvar();
 
-                        exibirMensagem("Empresa salvo com sucesso");
-                        finish(); //nao esqueca o finish ;)
+                            exibirMensagem("Empresa salvo com sucesso");
+                            finish(); //nao esqueca o finish ;)
 
+                        } else {
+                            exibirMensagem("Digite um tempo de entrega");
+                        }
                     } else {
-                        exibirMensagem("Digite um tempo de entrega");
+                        exibirMensagem("Digite uma categoria");
                     }
                 } else {
-                    exibirMensagem("Digite uma categoria");
+                    exibirMensagem("Digite uma taxa de entrega");
                 }
             } else {
-                exibirMensagem("Digite uma taxa de entrega");
+                exibirMensagem("Digite o endereço da empresa");
             }
-
         } else {
             exibirMensagem("Digite um nome para a empresa");
         }
@@ -223,8 +229,9 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
         }
     }
 
-    private void inicializarComponentes() {
+    private void inicializarComponentes(){
         editEmpresaNome = findViewById(R.id.editEmpresaNome);
+        editEmpresaEndereco = findViewById(R.id.editEmpresaEndereco);
         editEmpresaCategoria = findViewById(R.id.editEmpresaCategoria);
         editEmpresaTaxa = findViewById(R.id.editEmpresaTaxa);
         editEmpresaTempo = findViewById(R.id.editEmpresaTempo);

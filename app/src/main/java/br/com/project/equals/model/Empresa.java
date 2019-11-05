@@ -15,6 +15,7 @@ public class Empresa implements Serializable {
     private String tempo;
     private String categoria;
     private Double precoEntrega;
+    private String endereco;
 
 
     public Empresa(){
@@ -49,6 +50,14 @@ public class Empresa implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public String getTempo() {

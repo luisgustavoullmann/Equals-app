@@ -203,6 +203,7 @@ public class EmpresaActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Empresa> call, Response<Empresa> response) {
                 //Nossa resposta
+
             }
 
             @Override
