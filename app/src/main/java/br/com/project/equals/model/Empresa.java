@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
 
+import br.com.project.equals.api.EmpresaService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 
 public class Empresa implements Serializable {

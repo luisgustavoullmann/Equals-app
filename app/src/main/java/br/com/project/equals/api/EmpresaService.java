@@ -15,6 +15,6 @@ public interface EmpresaService {
      * integradas a nossa aplicação.
      * */
 
-    @GET("/api/add-loja")
+    @GET("/api/add-loja") //loja, entidade sob a qual os produtos adicionados
     Call<Empresa> recuperarLoja();
 }

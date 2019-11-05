@@ -64,10 +64,10 @@ public class EmpresaActivity extends AppCompatActivity {
         firebaseRef = ConfiguracaoFirebase.getFirebase();
         idUsuarioLogado = UsuarioFirebase.getIdUsuario();
 
-        //Retrofit Config
+        //Retrofit Config - passar a url
+        String url = "";
         retrofit = new Retrofit.Builder()
-        //passar a URL aonda está ""
-        .baseUrl("")
+        .baseUrl(url)
         .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
