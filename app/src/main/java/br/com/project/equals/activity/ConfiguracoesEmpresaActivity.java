@@ -31,20 +31,28 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 
 import br.com.project.equals.R;
+import br.com.project.equals.api.EmpresaService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
 import br.com.project.equals.model.Empresa;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
 
-    private EditText editEmpresaNome, editEmpresaCategoria, editEmpresaEndereco, editEmpresaTempo, editEmpresaTaxa;
+    private EditText editEmpresaNome, editEmpresaEndereco, editEmpresaCategoria, editEmpresaTempo, editEmpresaTaxa;
     private ImageView imagePerfilEmpresa;
 
     private static final int SELECAO_GALERIA = 200;
     private StorageReference storageReference;
     private DatabaseReference firebaseRef;
     private String idUsuarioLogado;
+    private Retrofit retrofit;
     private String urlImagemSelecionada = "";
+    private String urlWebService = "";
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -79,8 +87,16 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
             }
         });
 
-                /*Recuperar dados da emresa*/
-                recuperarDadosEmpresa();
+        //Retrofit Config - passar a url
+        retrofit = new Retrofit.Builder()
+                .baseUrl(urlWebService)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        //Retrofit
+        recuperarEmpresa();
+
+        /*Recuperar dados da emresa*/
+        recuperarDadosEmpresa();
     }
 
 
@@ -237,4 +253,26 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
         editEmpresaTempo = findViewById(R.id.editEmpresaTempo);
         imagePerfilEmpresa = findViewById(R.id.imagePerfilEmpresa);
     }
+
+
+    private void recuperarEmpresa(){
+        EmpresaService empresaService = retrofit.create(EmpresaService.class);
+        Call<Empresa> call = empresaService.recuperarLoja();
+
+        //call faz a tarefa assincrona dentro de uma thread para trazer as infos
+        call.enqueue(new Callback<Empresa>() {
+            @Override
+            public void onResponse(Call<Empresa> call, Response<Empresa> response) {
+                //Nossa resposta
+
+            }
+
+            @Override
+            public void onFailure(Call<Empresa> call, Throwable t) {
+                //Ao falhar
+            }
+        });
+
+    }
+
 }
