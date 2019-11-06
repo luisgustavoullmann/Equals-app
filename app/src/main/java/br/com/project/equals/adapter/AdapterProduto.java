@@ -100,13 +100,9 @@ public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.MyViewHo
                     if(produto.equals("")) {
                         return ;
                     } else {
-                        try {
-                            MyViewHolder.class.getName(nome.setText(produto.getNome()));
-                            MyViewHolder.class.getName(descricao.setText(produto.getDescricao()));
-                            MyViewHolder.class.getName(preco.setText(produto.getPreco()));
-                        } catch (NoSuchMethodException e) {
-                            e.printStackTrace();
-                        }
+                        nome.setText(produto.getNome());
+                        descricao.setText(produto.getDescricao());
+                        preco.setText(produto.getPreco());
                     }
 
                 }
