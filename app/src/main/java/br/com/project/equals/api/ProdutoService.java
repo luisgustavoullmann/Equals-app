@@ -4,6 +4,9 @@ import java.util.List;
 
 import br.com.project.equals.model.Produto;
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -21,7 +24,16 @@ public interface ProdutoService {
      * */
 
     @POST("api/add-produto") //Adiciona um produto na loja.
-    Call<Produto> adicionarProduto();
+    Call<Produto> adicionarProduto(@Body Produto produto);
+
+    @FormUrlEncoded
+    @POST("api/add-produto")
+    Call<Produto> adicionarProduto(
+            @Field("nome") String nome,
+            @Field("descricao") String descricao,
+            @Field("quantidade") int quantidade,
+            @Field("preco") int preco
+    );
 
     @PUT("api/edit-produto") //Possibilita a ediçao de um produto
     Call<Produto> editarProduto();

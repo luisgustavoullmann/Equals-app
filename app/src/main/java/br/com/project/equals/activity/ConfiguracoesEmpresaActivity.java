@@ -50,8 +50,8 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private DatabaseReference firebaseRef;
     private String idUsuarioLogado;
-    private Retrofit retrofit;
     private String urlImagemSelecionada = "";
+    private Retrofit retrofit;
     private String urlWebService = ""; //base url precisa terminar com /
 
     @SuppressLint("RestrictedApi")

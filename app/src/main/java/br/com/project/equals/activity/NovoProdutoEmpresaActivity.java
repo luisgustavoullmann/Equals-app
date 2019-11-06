@@ -35,6 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NovoProdutoEmpresaActivity extends AppCompatActivity {
 
@@ -46,6 +47,8 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
     private DatabaseReference firebaseRef;
     private String idUsuarioLogado;
     private String urlImagemSelecionada = "";
+    private Retrofit retrofit;
+    private String urlWebService = ""; //base url precisa terminar com /
 
 
     @SuppressLint("RestrictedApi")
@@ -82,6 +85,14 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
             }
         });
 
+        //Retrofit Config - passar a url
+        retrofit = new Retrofit.Builder()
+                .baseUrl(urlWebService)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        //Retrofit;
+        adicionarProduto();
+
     }
 
     //Metodo que salva os dados da empresa
@@ -100,7 +111,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
                     produto.setIdUsuario(idUsuarioLogado);
                     produto.setNome(nome);
                     produto.setDescricao(descricao);
-                    produto.setPreco(Double.parseDouble(preco));
+                    produto.setPreco(Integer.parseInt(preco));
                     produto.setImagemProduto(urlImagemSelecionada);
                     produto.salvar();
                     finish(); //nao esqueca o finish ;)
@@ -190,6 +201,33 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void adicionarProduto(){
+
+        //Config o obj
+       // final Produto produto = new Produto();
+       // produto.setNome("");
+      //  produto.setDescricao("");
+      //  produto.setPreco(0);
+
+        //Recupera o serviço e salva o produto
+        ProdutoService produtoService = retrofit.create(ProdutoService.class);
+        Call<Produto> call = produtoService.adicionarProduto("","",0 , 0);
+
+        call.enqueue(new Callback<Produto>() {
+            @Override
+            public void onResponse(Call<Produto> call, Response<Produto> response) {
+                if(response.isSuccessful()){
+                    Produto produtoResposta = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Produto> call, Throwable t) {
+
+            }
+        });
     }
 
 

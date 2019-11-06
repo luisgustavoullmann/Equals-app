@@ -14,6 +14,12 @@ public class Produto {
     private int preco;
     private String imagemProduto;
 
+    public Produto(String nome, String descricao, int preco) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+    }
+
     public Produto() {
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
         DatabaseReference produtoRef = firebaseRef
