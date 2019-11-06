@@ -11,7 +11,7 @@ public class Produto {
     private String nome;
     private String descricao;
     private int quantidade;
-    private Double preco;
+    private int preco;
     private String imagemProduto;
 
     public Produto() {
@@ -71,11 +71,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public Double getPreco() {
+    public int getPreco() {
         return preco;
     }
 
-    public void setPreco(Double preco) {
+    public void setPreco(int preco) {
         this.preco = preco;
     }
 

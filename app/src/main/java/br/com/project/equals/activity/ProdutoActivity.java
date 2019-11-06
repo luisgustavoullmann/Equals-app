@@ -31,6 +31,7 @@ import java.util.List;
 
 import br.com.project.equals.R;
 import br.com.project.equals.adapter.AdapterProduto;
+import br.com.project.equals.api.ProdutoService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
 import br.com.project.equals.listener.RecyclerItemClickListener;
@@ -40,6 +41,11 @@ import br.com.project.equals.model.Pedido;
 import br.com.project.equals.model.Produto;
 import br.com.project.equals.model.Usuario;
 import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProdutoActivity extends AppCompatActivity {
 
@@ -124,9 +130,6 @@ public class ProdutoActivity extends AppCompatActivity {
                 )
         );
 
-        //Recupera produtos da empresa para o usuario
-        recuperarProdutos();
-        recuperarDadosUsuario();
 
     }
 
@@ -151,7 +154,7 @@ public class ProdutoActivity extends AppCompatActivity {
                         itemPedido.setIdProduto(produtoSelecionado.getIdProduto());
                         itemPedido.setNomeProduto(produtoSelecionado.getNome());
                         itemPedido.setDescricaoProduto(produtoSelecionado.getDescricao());
-                        itemPedido.setPreco(produtoSelecionado.getPreco());
+                        itemPedido.setPreco((double) produtoSelecionado.getPreco());
                         itemPedido.setQuantidade(Integer.parseInt(quantidade)); //qtd não pode ser zero
 
                         //Add pedidos no carrinho
@@ -378,4 +381,5 @@ public class ProdutoActivity extends AppCompatActivity {
         textCarrinhoQtd = findViewById(R.id.textCarrinhoQtd);
         textCarrinhoTotal = findViewById(R.id.textCarrinhoTotal);
     }
+
 }

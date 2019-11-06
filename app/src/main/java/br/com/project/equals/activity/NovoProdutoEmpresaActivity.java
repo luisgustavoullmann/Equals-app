@@ -26,33 +26,18 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 
 import br.com.project.equals.R;
+import br.com.project.equals.api.ProdutoService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
 
 import br.com.project.equals.model.Produto;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class NovoProdutoEmpresaActivity extends AppCompatActivity {
 
-    /*
-     * -----------ATENÇÃO--------------------------
-     * É nessa Activity que devemos desenvolver o OCR para cadastro do produto
-     * Desenvolvi apenas um modelo simples para podermos testar as outras
-     * funcionalidades do sistema.
-     *
-     * A ideia é criamos um Button que aciona o OCR
-     * Com a lib de um OCR (como Tesseract, exemplo)
-     * Acionaremos a camera do cel, empresa tira DUAS fotos
-     * Uma para salvar a imagem do produto
-     * E outra para o OCR reconhecer a imagem da price tag
-     * Atribuindo os respectivos valores para cada atributo
-     * ----------------------------------------------------
-     *
-     * Foi criado no Database um no para empresa e outro para produto
-     * para podermos recuprar os produtos apenas quando necesario,
-     * senao a cada vez que recupero o no empresa, todos os produtos vem juntos
-     * E principalmente para reduzir o tamanho dos dados retornados
-     *
-     * */
 
     private EditText editProdutoNome, editProdutoDescricao, editProdutoPreco;
     private ImageView imagemProduto;
@@ -61,6 +46,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
     private DatabaseReference firebaseRef;
     private String idUsuarioLogado;
     private String urlImagemSelecionada = "";
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -95,6 +81,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     //Metodo que salva os dados da empresa
@@ -205,6 +192,5 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
         }
     }
 
-    
 
 }
