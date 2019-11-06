@@ -267,6 +267,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     //Converte o body do JSON
                     Empresa empresa = response.body();
+                    editEmpresaEndereco.setText(empresa.getEndereco());
                 }
             }
 

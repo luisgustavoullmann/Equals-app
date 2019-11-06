@@ -65,14 +65,14 @@ public class Empresa implements Serializable {
     }
 
     public void setEndereco(final String endereco) {
-        if(endereco.isEmpty() || endereco.equals(null)){
+        if(!this.endereco.equals(null)){
             EmpresaService empresaService = new EmpresaService() {
                 private String endereco;
 
                 @Override
                 public Call<Empresa> recuperarLoja() {
-                  this.endereco = logradouro + numero + bairro + complemento + cidade + cep + estado;
-                    return endereco;
+                  endereco = logradouro + numero + bairro + complemento + cidade + cep + estado;
+                    return this.endereco;
                 }
             };
         } else {
