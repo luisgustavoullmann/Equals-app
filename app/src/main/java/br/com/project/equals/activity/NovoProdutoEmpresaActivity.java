@@ -220,6 +220,11 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
             public void onResponse(Call<Produto> call, Response<Produto> response) {
                 if(response.isSuccessful()){
                     Produto produtoResposta = response.body();
+                    String resposta = editProdutoNome + " " + editProdutoDescricao;
+                    Toast.makeText(
+                            NovoProdutoEmpresaActivity.this,
+                            resposta,
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
