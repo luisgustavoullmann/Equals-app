@@ -65,7 +65,7 @@ public class Empresa implements Serializable {
     }
 
     public void setEndereco(final String endereco) {
-        if(!this.endereco.equals(null)){
+        if(this.endereco.isEmpty()){
             EmpresaService empresaService = new EmpresaService() {
                 private String address;
 
