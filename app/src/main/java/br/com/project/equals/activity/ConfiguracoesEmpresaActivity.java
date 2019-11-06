@@ -264,7 +264,10 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Empresa> call, Response<Empresa> response) {
                 //Nossa resposta
-
+                if(response.isSuccessful()){
+                    //Converte o body do JSON
+                    Empresa empresa = response.body();
+                }
             }
 
             @Override

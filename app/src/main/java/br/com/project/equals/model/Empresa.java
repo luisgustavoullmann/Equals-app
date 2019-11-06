@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import br.com.project.equals.api.EmpresaService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
+import retrofit2.Call;
 
 public class Empresa implements Serializable {
 
@@ -16,6 +17,13 @@ public class Empresa implements Serializable {
     private String categoria;
     private Double precoEntrega;
     private String endereco;
+    private String logradouro;
+    private int numero;
+    private String bairro;
+    private String complemento;
+    private String cidade;
+    private String cep;
+    private String estado;
 
 
     public Empresa(){
@@ -53,12 +61,23 @@ public class Empresa implements Serializable {
     }
 
     public String getEndereco() {
-
         return endereco;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setEndereco(final String endereco) {
+        if(endereco.isEmpty() || endereco.equals(null)){
+            EmpresaService empresaService = new EmpresaService() {
+                private String endereco;
+
+                @Override
+                public Call<Empresa> recuperarLoja() {
+                  this.endereco = logradouro + numero + bairro + complemento + cidade + cep + estado;
+                    return endereco;
+                }
+            };
+        } else {
+            this.endereco = endereco;
+        }
     }
 
     public String getTempo() {
