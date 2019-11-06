@@ -52,7 +52,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     private String idUsuarioLogado;
     private Retrofit retrofit;
     private String urlImagemSelecionada = "";
-    private String urlWebService = "";
+    private String urlWebService = ""; //base url precisa terminar com /
 
     @SuppressLint("RestrictedApi")
     @Override

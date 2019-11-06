@@ -71,7 +71,12 @@ public class Empresa implements Serializable {
 
                 @Override
                 public Call<Empresa> recuperarLoja() {
-                  address = logradouro + numero + bairro + complemento + cidade + cep + estado;
+                  address = logradouro + " " +
+                          numero + " " +
+                          bairro + " " +
+                          complemento + " " +
+                          cidade + " " +
+                          cep + " " + estado;
                     return null;
                 }
             };
