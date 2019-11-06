@@ -26,7 +26,7 @@ public interface ProdutoService {
     Call<Produto> editarProduto();
 
     @GET("api//produtos") //Lista todos os produtos do comerciante em questão
-    Call<List<Produto>> recuperarProdutos();
+    Call<List<Produto>> recuperarListaProduto();
 
     @GET("api/produto/{id}") //retorna informações de um determinado produto
     Call<Produto> recuperarProduto(@Path("id") String id);

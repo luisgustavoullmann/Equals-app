@@ -54,6 +54,7 @@ public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.MyViewHo
         //Retrofit
         recuperarProduto("");
 
+
         return new MyViewHolder(itemLista);
     }
 
@@ -100,9 +101,9 @@ public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.MyViewHo
                         return ;
                     } else {
                         try {
-                            MyViewHolder.class.getConstructor(nome.setText(produto.getNome());
-                            MyViewHolder.class.getConstructor(descricao.setText(produto.getDescricao());
-                            MyViewHolder.class.getConstructor(preco.setText(produto.getPreco());
+                            MyViewHolder.class.getName(nome.setText(produto.getNome()));
+                            MyViewHolder.class.getName(descricao.setText(produto.getDescricao()));
+                            MyViewHolder.class.getName(preco.setText(produto.getPreco()));
                         } catch (NoSuchMethodException e) {
                             e.printStackTrace();
                         }
