@@ -57,11 +57,10 @@ public class Usuario implements Serializable {
     public void setEndereco(String endereco) {
         if(this.endereco.isEmpty()){
             UsuarioService usuarioService = new UsuarioService() {
-                private String address;
 
                 @Override
                 public Call<Usuario> recuperarUsuario() {
-                    address = logradouro + " " +
+                    String address = logradouro + " " +
                             numero + " " +
                             bairro + " " +
                             complemento + " " +

@@ -67,11 +67,10 @@ public class Empresa implements Serializable {
     public void setEndereco(final String endereco) {
         if(this.endereco.isEmpty()){
             EmpresaService empresaService = new EmpresaService() {
-                private String address;
 
                 @Override
                 public Call<Empresa> recuperarLoja() {
-                  address = logradouro + " " +
+                    String address = logradouro + " " +
                           numero + " " +
                           bairro + " " +
                           complemento + " " +
