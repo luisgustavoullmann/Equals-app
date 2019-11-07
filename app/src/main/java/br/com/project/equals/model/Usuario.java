@@ -4,7 +4,9 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
 
+import br.com.project.equals.api.UsuarioService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
+import retrofit2.Call;
 
 public class Usuario implements Serializable {
 
@@ -14,6 +16,13 @@ public class Usuario implements Serializable {
     private String telefone;
     private String cpf;
     private String urlImagem;
+    private String logradouro;
+    private int numero;
+    private String bairro;
+    private String complemento;
+    private String cidade;
+    private String cep;
+    private String estado;
 
     public void salvar(){
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
@@ -46,7 +55,24 @@ public class Usuario implements Serializable {
     }
 
     public void setEndereco(String endereco) {
-        this.endereco = endereco;
+        if(this.endereco.isEmpty()){
+            UsuarioService usuarioService = new UsuarioService() {
+                private String address;
+
+                @Override
+                public Call<Usuario> recuperarUsuario() {
+                    address = logradouro + " " +
+                            numero + " " +
+                            bairro + " " +
+                            complemento + " " +
+                            cidade + " " +
+                            cep + " " + estado;
+                    return null;
+                }
+            };
+        } else {
+            this.endereco = endereco;
+        }
     }
 
     public String getTelefone() {

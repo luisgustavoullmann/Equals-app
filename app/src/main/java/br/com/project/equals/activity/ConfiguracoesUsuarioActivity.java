@@ -29,10 +29,16 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 
 import br.com.project.equals.R;
+import br.com.project.equals.api.UsuarioService;
 import br.com.project.equals.helper.ConfiguracaoFirebase;
 import br.com.project.equals.helper.UsuarioFirebase;
 import br.com.project.equals.model.Empresa;
 import br.com.project.equals.model.Usuario;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
 
@@ -45,6 +51,9 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private String idUsuarioLogado;
     private String urlImagemSelecionada = "";
+
+    private Retrofit retrofit;
+    private String urlWebService = ""; //base url precisa terminar com /
 
 
 
@@ -81,6 +90,14 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Retrofit Config - passar a url
+        retrofit = new Retrofit.Builder()
+                .baseUrl(urlWebService)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        //Retrofit
+        recuperarUsuario();
 
         //Recupera dados do Usuario
         recuperarDadosUsuario();
@@ -233,6 +250,29 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
         editTelefoneUsuario = findViewById(R.id.editTelefoneUsuario);
         editCpfUsuario = findViewById(R.id.editCpfUsuario);
         imagePerfilUsuario = findViewById(R.id.imagePerfilUsuario);
+    }
+
+    private void recuperarUsuario(){
+        UsuarioService usuarioService = retrofit.create(UsuarioService.class);
+        Call<Usuario> call = usuarioService.recuperarUsuario();
+
+        //call faz a tarefa assincrona dentro de uma thread para trazer as infos
+        call.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                //Nossa resposta
+                if(response.isSuccessful()){
+                    Usuario usuario = response.body();
+                    editNomeUsuario.setText(usuario.getNome());
+                    editEnderecoUsuario.setText(usuario.getEndereco());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+
+            }
+        });
     }
 
 

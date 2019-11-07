@@ -2,6 +2,7 @@ package br.com.project.equals.api;
 
 import br.com.project.equals.model.Usuario;
 import retrofit2.Call;
+import retrofit2.http.GET;
 
 public interface UsuarioService {
 
@@ -14,5 +15,6 @@ public interface UsuarioService {
      * integradas a nossa aplicação.
      * */
 
+    @GET("api/registration/")
     Call<Usuario> recuperarUsuario();
 }
