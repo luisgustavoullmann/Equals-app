@@ -266,11 +266,18 @@ public class ConfiguracoesUsuarioActivity extends AppCompatActivity {
                     editNomeUsuario.setText(usuario.getNome());
                     editEnderecoUsuario.setText(usuario.getEndereco());
                 }
+                Toast.makeText(ConfiguracoesUsuarioActivity.this,
+                        response.code(),
+                        Toast.LENGTH_LONG
+                ).show();
             }
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
-
+                Toast.makeText(ConfiguracoesUsuarioActivity.this,
+                        "O procedimento falhou!",
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
     }

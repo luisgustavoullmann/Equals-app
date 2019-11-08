@@ -270,11 +270,19 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                     editEmpresaNome.setText(empresa.getNome());
                     editEmpresaEndereco.setText(empresa.getEndereco());
                 }
+                Toast.makeText(ConfiguracoesEmpresaActivity.this,
+                        response.code(),
+                        Toast.LENGTH_LONG
+                        ).show();
             }
 
             @Override
             public void onFailure(Call<Empresa> call, Throwable t) {
                 //Ao falhar
+                Toast.makeText(ConfiguracoesEmpresaActivity.this,
+                        "O procedimento falhou!",
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
 

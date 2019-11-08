@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -138,7 +139,10 @@ public class PedidosActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(PedidosActivity.this,
+                        "O pedido foi cancelado!",
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
 

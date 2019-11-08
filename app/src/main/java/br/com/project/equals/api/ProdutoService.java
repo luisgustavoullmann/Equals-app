@@ -35,12 +35,12 @@ public interface ProdutoService {
             @Field("preco") int preco
     );
 
-    @PUT("api/edit-produto") //Possibilita a ediçao de um produto
-    Call<Produto> editarProduto();
+    @PUT("api/edit-produto/{id}") //Possibilita a ediçao de um produto
+    Call<Produto> editarProduto(@Path("id") int id, Produto produto);
 
     @GET("api//produtos") //Lista todos os produtos do comerciante em questão
     Call<List<Produto>> recuperarListaProduto();
 
     @GET("api/produto/{id}") //retorna informações de um determinado produto
-    Call<Produto> recuperarProduto(@Path("id") String id);
+    Call<Produto> recuperarProduto(@Path("id") String id, @Body Produto produto);
 }

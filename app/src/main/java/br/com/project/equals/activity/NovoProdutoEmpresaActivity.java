@@ -49,6 +49,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
     private String urlImagemSelecionada = "";
     private Retrofit retrofit;
     private String urlWebService = ""; //base url precisa terminar com /
+    public ProdutoService produtoService;
 
 
     @SuppressLint("RestrictedApi")
@@ -92,6 +93,9 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
                 .build();
         //Retrofit;
         adicionarProduto();
+        editarProduto();
+
+        produtoService = retrofit.create(ProdutoService.class);
 
     }
 
@@ -212,7 +216,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
       //  produto.setPreco(0);
 
         //Recupera o serviço e salva o produto
-        ProdutoService produtoService = retrofit.create(ProdutoService.class);
+        //ProdutoService produtoService = retrofit.create(ProdutoService.class);
         Call<Produto> call = produtoService.adicionarProduto("","",0 , 0);
 
         call.enqueue(new Callback<Produto>() {
@@ -223,7 +227,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
                     String resposta = editProdutoNome + " " + editProdutoDescricao;
                     Toast.makeText(
                             NovoProdutoEmpresaActivity.this,
-                            resposta,
+                            response.code(),
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -231,6 +235,33 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Produto> call, Throwable t) {
 
+            }
+        });
+    }
+
+    private void editarProduto(){
+        Produto produto = new Produto();
+        Call<Produto> call = (Call<Produto>) produtoService.editarProduto(0, produto);
+
+        call.enqueue(new Callback<Produto>() {
+            @Override
+            public void onResponse(Call<Produto> call, Response<Produto> response) {
+                if(response.isSuccessful()){
+                    Produto produtoResposta = response.body();
+                    String resposta = editProdutoNome + " " + editProdutoDescricao;
+                    Toast.makeText(
+                            NovoProdutoEmpresaActivity.this,
+                            response.code(),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Produto> call, Throwable t) {
+                Toast.makeText(NovoProdutoEmpresaActivity.this,
+                        "O procedimento falhou!",
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
     }
