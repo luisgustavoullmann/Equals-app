@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.project.equals.model.Produto;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -43,4 +44,7 @@ public interface ProdutoService {
 
     @GET("api/produto/{id}") //retorna informações de um determinado produto
     Call<Produto> recuperarProduto(@Path("id") String id, @Body Produto produto);
+
+    @DELETE("api/delete-produto/{id}")
+    Call<Void> deletarProduto(@Path("id") int id);
 }

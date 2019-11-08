@@ -94,6 +94,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
         //Retrofit;
         adicionarProduto();
         editarProduto();
+        deletarProduto();
 
         produtoService = retrofit.create(ProdutoService.class);
 
@@ -264,6 +265,31 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    private void deletarProduto(){
+        Call<Void> call = produtoService.deletarProduto(0);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()){
+                    String resposta = editProdutoNome + " " + editProdutoDescricao;
+                    Toast.makeText(
+                            NovoProdutoEmpresaActivity.this,
+                            response.code(),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(NovoProdutoEmpresaActivity.this,
+                        "O procedimento falhou!",
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
+
     }
 
 
